@@ -1,1 +1,0 @@
-# baiky-design-challenge
