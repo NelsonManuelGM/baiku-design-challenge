@@ -26,16 +26,16 @@ export class PickupLocationService {
     return this.pLocationRep.find({});
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.pLocationRep.findOne({ id: id });
   }
 
-  update(id: number, { gpsLocations, ...rest }: UpdatePickupLocationDto) {
+  update(id: string, { gpsLocations, ...rest }: UpdatePickupLocationDto) {
     const newGpsLocation = createDataPoint(gpsLocations)
     return this.pLocationRep.update({ id: id }, { gpsLocations: newGpsLocation, ...rest });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.pLocationRep.delete({ id: id });
   }
 

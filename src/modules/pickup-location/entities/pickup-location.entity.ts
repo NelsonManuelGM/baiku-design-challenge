@@ -1,12 +1,10 @@
 import { Point } from "geojson";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
-import { CreatePickupLocationDto } from './../dto/create-pickup-location.dto';
-
 
 @Entity()
 export class PickupLocation {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   country: string;
