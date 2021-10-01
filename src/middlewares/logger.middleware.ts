@@ -5,8 +5,6 @@ export function LoggerMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  console.group("REQUEST INFO...");
   console.log(`${req.method} ${req.path}`);
-  console.groupEnd();
   next();
 }
