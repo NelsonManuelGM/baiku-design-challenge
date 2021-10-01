@@ -19,7 +19,7 @@ export class PickupLocation {
   street: string;
 
   @Column()
-  postalCode: string;
+  postal_code: string;
 
   @Index()
   @Column({
@@ -28,6 +28,6 @@ export class PickupLocation {
     srid: 4326,
     nullable: true,
   })
-  gpsLocations: Point;
+  gps_location: Point;
 
 }

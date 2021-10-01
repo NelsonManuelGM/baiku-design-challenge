@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import createDataPoint from 'src/utils/arrToPointHelper';
 import { Repository } from 'typeorm';
+import { ClosestLocation } from '../dto/closest-location.dto';
 import { CreatePickupLocationDto } from '../dto/create-pickup-location.dto';
 import { UpdatePickupLocationDto } from '../dto/update-pickup-location.dto';
 import { PickupLocation } from '../entities/pickup-location.entity';
@@ -14,11 +15,11 @@ export class PickupLocationService {
     const newPLocation = new PickupLocation();
     newPLocation.city = city;
     newPLocation.country = country;
-    newPLocation.postalCode = postalCode;
+    newPLocation.postal_code = postalCode;
     newPLocation.state = state;
     newPLocation.street = street;
 
-    newPLocation.gpsLocations = createDataPoint(gpsLocations)
+    newPLocation.gps_location = createDataPoint(gpsLocations)
     return this.pLocationRep.save(newPLocation);
   }
 
@@ -32,13 +33,34 @@ export class PickupLocationService {
 
   update(id: string, { gpsLocations, ...rest }: UpdatePickupLocationDto) {
     const newGpsLocation = createDataPoint(gpsLocations)
-    return this.pLocationRep.update({ id: id }, { gpsLocations: newGpsLocation, ...rest });
+    return this.pLocationRep.update({ id: id }, { gps_location: newGpsLocation, ...rest });
   }
 
   remove(id: string) {
     return this.pLocationRep.delete({ id: id });
   }
 
+  async closestLocation({ gpsLocations, country, state, city, postalCode }: ClosestLocation) {
+    const origin = {
+      type: "Point",
+      coordinates: [gpsLocations[0], gpsLocations[1]]
+    };
+
+    const locations = await this.pLocationRep
+      .createQueryBuilder('closer_locations')
+      .select(['id','country', 'state', 'city', 'postal_code',
+        'ST_Distance(gps_location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(gps_location))) AS distance'])
+      .where('closer_locations.country = :country', { country })
+      .where('closer_locations.state = :state', { state })
+      .where('closer_locations.city = :city', { city })
+      .where('closer_locations.postal_code = :postalCode', { postalCode })
+      .orderBy("distance","ASC")
+      .setParameters({
+        origin: JSON.stringify(origin)
+      })
+      .getRawMany();
+      return locations[0]
+  }
 
 }
 

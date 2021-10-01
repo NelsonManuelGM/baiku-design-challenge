@@ -5,6 +5,7 @@ import { CreatePickupLocationDto } from '../dto/create-pickup-location.dto';
 import { UpdatePickupLocationDto } from '../dto/update-pickup-location.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UuidPipe } from 'src/pipes/uuid.pipes';
+import { ClosestLocation } from '../dto/closest-location.dto';
 
 @ApiTags('pickup-location')
 @Controller('pickup-location')
@@ -56,4 +57,9 @@ export class PickupLocationController {
   remove(@Param('id', UuidPipe) id: string) {
     return this.pickupLocationService.remove(id);
   }
+
+  @Post('closest')
+  getClosestLocation(@Body() gpsLocations: ClosestLocation) {
+    return this.pickupLocationService.closestLocation(gpsLocations);
+  } 
 }
