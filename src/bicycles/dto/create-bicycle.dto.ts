@@ -1,6 +1,6 @@
-import { TOURING, SPORT, UserRoleType } from './../entities/bicycle.entity';
-import { IsBoolean, IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 import { GeoJsonObject, Position } from 'geojson';
+import { UserRoleType } from './../entities/bicycle.entity';
 
 interface PointType extends GeoJsonObject {
   type: 'Point';

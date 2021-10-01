@@ -11,9 +11,11 @@ export class BicyclesService {
   constructor(
     @InjectRepository(Bicycle)
     private readonly bicyclesRep: Repository<Bicycle>,
-  ) {}
+  ) { }
 
   async create({ type, gpsLocations, locked }: CreateBicycleDto) {
+   
+    
     const newBike = new Bicycle();
     newBike.type = type;
     newBike.locked = locked;
@@ -26,19 +28,19 @@ export class BicyclesService {
     return await this.bicyclesRep.save(newBike);
   }
 
-  findAll() {
-    return `This action returns all bicycles`;
+  async findAll() {
+    return await this.bicyclesRep.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bicycle`;
+  async findOne(id: string) {
+    return await this.bicyclesRep.findOne({ id: id });
   }
 
-  update(id: number, updateBicycleDto: UpdateBicycleDto) {
-    return `This action updates a #${id} bicycle`;
+  async update(id: string, updateBicycleDto: UpdateBicycleDto) {
+    return await this.bicyclesRep.update({ id: id }, updateBicycleDto)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bicycle`;
+  async remove(id: string) {
+    return await this.bicyclesRep.delete({ id: id });
   }
 }

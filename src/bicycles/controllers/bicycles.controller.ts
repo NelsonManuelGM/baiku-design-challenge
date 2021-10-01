@@ -1,25 +1,26 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { BicyclesService } from '../services/bicycles.service';
+import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { CreateBicycleDto } from '../dto/create-bicycle.dto';
 import { UpdateBicycleDto } from '../dto/update-bicycle.dto';
+import { BicyclesService } from '../services/bicycles.service';
 
 @ApiTags('cats')
 @Controller('bicycles')
 export class BicyclesController {
-  constructor(private readonly bicyclesService: BicyclesService) {}
+  constructor(private readonly bicyclesService: BicyclesService) { }
 
   @Post()
   async create(@Body() createBicycleDto: CreateBicycleDto) {
-    return await this.bicyclesService.create(createBicycleDto);
+    return this.bicyclesService.create(createBicycleDto);
   }
 
   @Get()
@@ -28,17 +29,17 @@ export class BicyclesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bicyclesService.findOne(+id);
+  findOne(@Param('id', UuidPipe) id: string) {
+    return this.bicyclesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBicycleDto: UpdateBicycleDto) {
-    return this.bicyclesService.update(+id, updateBicycleDto);
+  update(@Param('id', UuidPipe) id: string, @Body() updateBicycleDto: UpdateBicycleDto) {
+    return this.bicyclesService.update(id, updateBicycleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bicyclesService.remove(+id);
+  remove(@Param('id', UuidPipe) id: string) {
+    return this.bicyclesService.remove(id);
   }
 }
