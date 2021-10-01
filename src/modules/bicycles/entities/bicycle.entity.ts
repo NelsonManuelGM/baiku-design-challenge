@@ -28,5 +28,5 @@ export class Bicycle {
     srid: 4326,
     nullable: true,
   })
-  gpsLocations: Point;
+  gps_location: Point;
 }

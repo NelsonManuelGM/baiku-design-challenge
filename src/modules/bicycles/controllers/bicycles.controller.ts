@@ -1,4 +1,3 @@
-import { BicyclesModule } from './../bicycles.module';
 import {
   Body,
   Controller,
@@ -13,6 +12,7 @@ import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { CreateBicycleDto } from '../dto/create-bicycle.dto';
 import { UpdateBicycleDto } from '../dto/update-bicycle.dto';
 import { BicyclesService } from '../services/bicycles.service';
+import { BicyclesModule } from './../bicycles.module';
 
 @ApiTags('bicycles')
 @Controller('bicycles')
