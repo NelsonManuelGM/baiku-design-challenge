@@ -11,8 +11,8 @@ export class UsersService {
 
   create({ firstName, lastName, email }: CreateUserDto) {
     const newUser = new User()
-    newUser.firstName = firstName;
-    newUser.lastName = lastName;
+    newUser.first_name = firstName;
+    newUser.last_name = lastName;
     newUser.email = email;
 
     return this.userRep.save(newUser)
