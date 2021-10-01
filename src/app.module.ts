@@ -5,11 +5,13 @@ import { AppController } from './app.controller';
 import { BicyclesModule } from './modules/bicycles/bicycles.module';
 import { Bicycle } from './modules/bicycles/entities/bicycle.entity';
 import { PickupLocationModule } from './modules/pickup-location/pickup-location.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     BicyclesModule,
     PickupLocationModule,
+    UsersModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({

@@ -39,7 +39,7 @@ export class PickupLocationController {
     type: PickupLocation,
   })
   findOne(@Param('id', UuidPipe) id: string) {
-    return this.pickupLocationService.findOne(+id);
+    return this.pickupLocationService.findOne(id);
   }
 
   @Get(':id')
