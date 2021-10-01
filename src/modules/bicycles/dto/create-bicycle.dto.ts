@@ -1,6 +1,6 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 import { GeoJsonObject, Position } from 'geojson';
-import { UserRoleType } from './../entities/bicycle.entity';
+import { UserRoleType } from '../entities/bicycle.entity';
 
 interface PointType extends GeoJsonObject {
   type: 'Point';
@@ -15,5 +15,7 @@ export class CreateBicycleDto {
   @IsNotEmpty()
   type: UserRoleType;
 
+  @IsArray()
+  @IsNotEmpty()
   gpsLocations: PointType;
 }

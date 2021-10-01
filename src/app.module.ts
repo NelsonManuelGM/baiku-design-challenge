@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { BicyclesModule } from './bicycles/bicycles.module';
-import { Bicycle } from './bicycles/entities/bicycle.entity';
+import { BicyclesModule } from './modules/bicycles/bicycles.module';
+import { Bicycle } from './modules/bicycles/entities/bicycle.entity';
+import { PickupLocationModule } from './modules/pickup-location/pickup-location.module';
 
 @Module({
   imports: [
     BicyclesModule,
+    PickupLocationModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({

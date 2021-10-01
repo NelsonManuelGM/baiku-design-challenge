@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Point } from 'geojson';
+import createDataPoint from 'src/utils/arrToPointHelper';
 import { Repository } from 'typeorm';
 import { CreateBicycleDto } from '../dto/create-bicycle.dto';
 import { UpdateBicycleDto } from '../dto/update-bicycle.dto';
@@ -14,17 +15,10 @@ export class BicyclesService {
   ) { }
 
   async create({ type, gpsLocations, locked }: CreateBicycleDto) {
-   
-    
     const newBike = new Bicycle();
     newBike.type = type;
     newBike.locked = locked;
-
-    const _gpsLocations: Point = {
-      type: 'Point',
-      coordinates: [gpsLocations[0], gpsLocations[1]],
-    };
-    newBike.gpsLocations = _gpsLocations;
+    newBike.gpsLocations = createDataPoint(gpsLocations)
     return await this.bicyclesRep.save(newBike);
   }
 
@@ -36,8 +30,10 @@ export class BicyclesService {
     return await this.bicyclesRep.findOne({ id: id });
   }
 
-  async update(id: string, updateBicycleDto: UpdateBicycleDto) {
-    return await this.bicyclesRep.update({ id: id }, updateBicycleDto)
+  async update(id: string, {gpsLocations, ...rest}: UpdateBicycleDto) {
+    const newGpsLocation = createDataPoint(gpsLocations)
+
+    return await this.bicyclesRep.update({ id: id }, {gpsLocations:newGpsLocation, ...rest})
   }
 
   async remove(id: string) {

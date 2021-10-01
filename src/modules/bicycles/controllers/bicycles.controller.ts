@@ -13,7 +13,7 @@ import { CreateBicycleDto } from '../dto/create-bicycle.dto';
 import { UpdateBicycleDto } from '../dto/update-bicycle.dto';
 import { BicyclesService } from '../services/bicycles.service';
 
-@ApiTags('cats')
+@ApiTags('bicycles')
 @Controller('bicycles')
 export class BicyclesController {
   constructor(private readonly bicyclesService: BicyclesService) { }
