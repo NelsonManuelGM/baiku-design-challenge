@@ -1,5 +1,6 @@
 import { Point } from 'geojson';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Reservation } from 'src/modules/reservation/entities/reservation.entity';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export type TOURING = 'TOURING';
 export type SPORT = 'SPORT';
@@ -29,4 +30,7 @@ export class Bicycle {
     nullable: true,
   })
   gps_location: Point;
+
+  @OneToMany(() => Reservation, reservation => reservation.location)
+  reservations: Reservation[]
 }
