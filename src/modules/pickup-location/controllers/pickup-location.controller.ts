@@ -1,16 +1,16 @@
-import { PickupLocation } from './../entities/pickup-location.entity';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PickupLocationService } from '../services/pickup-location.service';
-import { CreatePickupLocationDto } from '../dto/create-pickup-location.dto';
-import { UpdatePickupLocationDto } from '../dto/update-pickup-location.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { ClosestLocation } from '../dto/closest-location.dto';
+import { CreatePickupLocationDto } from '../dto/create-pickup-location.dto';
+import { UpdatePickupLocationDto } from '../dto/update-pickup-location.dto';
+import { PickupLocationService } from '../services/pickup-location.service';
+import { PickupLocation } from './../entities/pickup-location.entity';
 
 @ApiTags('pickup-location')
 @Controller('pickup-location')
 export class PickupLocationController {
-  constructor(private readonly pickupLocationService: PickupLocationService) {}
+  constructor(private readonly pickupLocationService: PickupLocationService) { }
 
   @Post()
   @ApiResponse({
@@ -58,8 +58,9 @@ export class PickupLocationController {
     return this.pickupLocationService.remove(id);
   }
 
+  //TODO modify this to a GET method with params
   @Post('closest')
   getClosestLocation(@Body() gpsLocations: ClosestLocation) {
     return this.pickupLocationService.closestLocation(gpsLocations);
-  } 
+  }
 }

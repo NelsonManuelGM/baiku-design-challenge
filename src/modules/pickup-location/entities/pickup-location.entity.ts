@@ -1,5 +1,6 @@
 import { Point } from "geojson";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Reservation } from "src/modules/reservation/entities/reservation.entity";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class PickupLocation {
@@ -29,5 +30,8 @@ export class PickupLocation {
     nullable: true,
   })
   gps_location: Point;
+
+  @OneToMany(() => Reservation, reservation => reservation.location)
+  reservations: Reservation[]
 
 }

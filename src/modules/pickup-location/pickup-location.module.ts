@@ -1,12 +1,13 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import { PickupLocationService } from './services/pickup-location.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PickupLocationController } from './controllers/pickup-location.controller';
 import { PickupLocation } from './entities/pickup-location.entity';
+import { PickupLocationService } from './services/pickup-location.service';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([PickupLocation])],
+  imports: [TypeOrmModule.forFeature([PickupLocation])],
   controllers: [PickupLocationController],
-  providers: [PickupLocationService]
+  providers: [PickupLocationService],
+  exports: [PickupLocationService]
 })
-export class PickupLocationModule {}
+export class PickupLocationModule { }
