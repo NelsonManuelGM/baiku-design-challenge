@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -27,6 +27,9 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
+    if(Object.keys(updateUserDto).length === 0){
+      throw new BadRequestException('Update values are not defined!')
+    }
     return this.userRep.update({ id: id }, updateUserDto);
   }
 

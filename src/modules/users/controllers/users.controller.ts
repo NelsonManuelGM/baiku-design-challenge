@@ -1,11 +1,12 @@
 import { UuidPipe } from 'src/pipes/uuid.pipes';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -44,7 +45,11 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id', UuidPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    try{
+      return this.usersService.update(id, updateUserDto);
+    }catch(error){
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
