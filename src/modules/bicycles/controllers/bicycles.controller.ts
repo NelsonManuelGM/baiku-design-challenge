@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post
@@ -54,7 +56,11 @@ export class BicyclesController {
 
   @Patch(':id')
   update(@Param('id', UuidPipe) id: string, @Body() updateBicycleDto: UpdateBicycleDto) {
-    return this.bicyclesService.update(id, updateBicycleDto);
+    try {
+      return this.bicyclesService.update(id, updateBicycleDto);
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+    }
   }
 
   @Delete(':id')

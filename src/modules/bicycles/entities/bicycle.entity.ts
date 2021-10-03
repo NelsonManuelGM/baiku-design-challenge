@@ -1,6 +1,6 @@
 import { Point } from 'geojson';
 import { Reservation } from 'src/modules/reservation/entities/reservation.entity';
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export type TOURING = 'TOURING';
 export type SPORT = 'SPORT';
@@ -33,4 +33,10 @@ export class Bicycle {
 
   @OneToMany(() => Reservation, reservation => reservation.location)
   reservations: Reservation[]
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updated_at: Date;
 }

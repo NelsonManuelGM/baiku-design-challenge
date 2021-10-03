@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import createDataPoint from 'src/utils/arrToPointHelper';
 import { Repository } from 'typeorm';
@@ -29,10 +29,18 @@ export class BicyclesService {
     return await this.bicyclesRep.findOne({ id: id });
   }
 
-  async update(id: string, { gpsLocations, ...rest }: UpdateBicycleDto) {
-    const newGpsLocation = createDataPoint(gpsLocations)
+  async update(id: string, updateBicycleDto: UpdateBicycleDto) {
+    if (Object.keys(updateBicycleDto).length === 0) {
+      throw new BadRequestException('Update values are not defined!')
+    }
+    const { gpsLocations, ...rest } = updateBicycleDto;
+    const data = { ...rest }
+    if (gpsLocations) {
+      const newGpsLocation = createDataPoint(gpsLocations)
+      data['gps_location'] = newGpsLocation
+    }
 
-    return await this.bicyclesRep.update({ id: id }, { gps_location: newGpsLocation, ...rest })
+    return await this.bicyclesRep.update({ id: id }, data)
   }
 
   async remove(id: string) {
