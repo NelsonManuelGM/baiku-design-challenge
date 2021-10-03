@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { ClosestLocation } from '../dto/closest-location.dto';
@@ -50,7 +50,12 @@ export class PickupLocationController {
 
   @Patch(':id')
   update(@Param('id', UuidPipe) id: string, @Body() updatePickupLocationDto: UpdatePickupLocationDto) {
+    try{
     return this.pickupLocationService.update(id, updatePickupLocationDto);
+    }catch(error){
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      
+    }
   }
 
   @Delete(':id')
