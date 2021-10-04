@@ -1,29 +1,11 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
-import { GeoJsonObject, Position } from "geojson";
-
-interface PointType extends GeoJsonObject {
-  type: 'Point';
-  coordinates: Position;
-}
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class ClosestLocation {
-  @IsArray()
+  @IsString()
   @IsNotEmpty()
-  gpsLocations: PointType;
+  lat: string;
 
   @IsString()
   @IsNotEmpty()
-  country: string;
-
-  @IsString()
-  @IsNotEmpty()
-  state: string;
-
-  @IsString()
-  @IsNotEmpty()
-  city: string;
-
-  @IsString()
-  @IsNotEmpty()
-  postalCode: string;
+  lng: string;
 }

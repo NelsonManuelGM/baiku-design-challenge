@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { ClosestLocation } from '../dto/closest-location.dto';
@@ -22,6 +22,8 @@ export class PickupLocationController {
     return this.pickupLocationService.create(createPickupLocationDto);
   }
 
+
+
   @Get()
   @ApiResponse({
     status: 200,
@@ -31,6 +33,12 @@ export class PickupLocationController {
   })
   findAll() {
     return this.pickupLocationService.findAll();
+  }
+
+
+  @Get('closest')
+  closest(@Query() gpsLocations: ClosestLocation) {
+    return this.pickupLocationService.closestLocation(gpsLocations);
   }
 
   @Get(':id')
@@ -43,18 +51,13 @@ export class PickupLocationController {
     return this.pickupLocationService.findOne(id);
   }
 
-  @Get(':id')
-  findByCoordinates(@Param('id', UuidPipe) id: string) {
-    return this.pickupLocationService.findOne(id);
-  }
-
   @Patch(':id')
   update(@Param('id', UuidPipe) id: string, @Body() updatePickupLocationDto: UpdatePickupLocationDto) {
-    try{
-    return this.pickupLocationService.update(id, updatePickupLocationDto);
-    }catch(error){
+    try {
+      return this.pickupLocationService.update(id, updatePickupLocationDto);
+    } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
-      
+
     }
   }
 
@@ -63,9 +66,4 @@ export class PickupLocationController {
     return this.pickupLocationService.remove(id);
   }
 
-  //TODO modify this to a GET method with params
-  @Post('closest')
-  getClosestLocation(@Body() gpsLocations: ClosestLocation) {
-    return this.pickupLocationService.closestLocation(gpsLocations);
-  }
 }

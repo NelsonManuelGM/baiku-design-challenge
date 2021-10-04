@@ -32,7 +32,7 @@ export class PickupLocationService {
   }
 
   update(id: string, updatePickupLocationDto: UpdatePickupLocationDto) {
-    if(Object.keys(updatePickupLocationDto).length === 0){
+    if (Object.keys(updatePickupLocationDto).length === 0) {
       throw new BadRequestException('Update values are not defined!')
     }
     const { gpsLocations, ...rest } = updatePickupLocationDto;
@@ -44,26 +44,22 @@ export class PickupLocationService {
     return this.pLocationRep.delete({ id: id });
   }
 
-  async closestLocation({ gpsLocations, country, state, city, postalCode }: ClosestLocation) {
+  async closestLocation({ lat, lng }: ClosestLocation) {
     const origin = {
       type: "Point",
-      coordinates: [gpsLocations[0], gpsLocations[1]]
+      coordinates: [lat, lng]
     };
 
     const locations = await this.pLocationRep
       .createQueryBuilder('closer_locations')
-      .select(['id','country', 'state', 'city', 'postal_code',
+      .select(['id', 'country', 'state', 'city', 'postal_code',
         'ST_Distance(gps_location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(gps_location))) AS distance'])
-      .where('closer_locations.country = :country', { country })
-      .where('closer_locations.state = :state', { state })
-      .where('closer_locations.city = :city', { city })
-      .where('closer_locations.postal_code = :postalCode', { postalCode })
-      .orderBy("distance","ASC")
+      .orderBy("distance", "ASC")
       .setParameters({
         origin: JSON.stringify(origin)
       })
       .getRawMany();
-      return locations[0]
+    return locations[0]
   }
 
 }
