@@ -39,3 +39,23 @@ export class CreatePickupLocationDto {
   gps_locations: PointType;
 
 }
+
+export class CreatedPickUpLocation{
+  @ApiProperty()
+  city: string;
+
+  @ApiProperty()
+  country: string;
+
+  @ApiProperty()
+  postal_code: string;
+
+  @ApiProperty()
+  state: string;
+
+  @ApiProperty()
+  street: string;
+
+  @ApiProperty({type: Array ,example:[254525852,-80125474]})
+  gps_location: PointType
+}

@@ -16,3 +16,17 @@ export class CreateUserDto {
     @IsNotEmpty()
     email: string;
 }
+
+export class CreatedUser{
+    @ApiProperty()
+    first_name: string;
+
+    @ApiProperty()
+    last_name: string;
+
+    @ApiProperty()
+    email: string;
+
+    @ApiProperty()
+    id: string;
+}

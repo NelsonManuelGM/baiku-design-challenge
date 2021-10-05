@@ -24,3 +24,23 @@ export class CreateBicycleDto {
   @IsNotEmpty()
   gps_locations: PointType;
 }
+
+export class CreatedBicycle{
+  @ApiProperty()
+  type: string;
+
+  @ApiProperty()
+  locked: boolean;
+
+  @ApiProperty({type: Array ,example:[254525852,-80125474]})
+  gps_location: PointType
+
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  created_at: Date;
+
+  @ApiProperty()
+  updated_at: Date;
+}

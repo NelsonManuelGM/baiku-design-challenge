@@ -22,3 +22,26 @@ export class CreateReservationDto {
     @IsNotEmpty()
     reserve_for: Date;
 }
+
+export class CreatedReservation{
+    @ApiProperty()
+    "id": string;
+
+    @ApiProperty()
+    user_id: string | null;
+
+    @ApiProperty()
+    location_id: string;
+
+    @ApiProperty()
+    bicycle_id: string;
+
+    @ApiProperty()
+    reserve_for: Date;
+
+    @ApiProperty()
+    created_at: Date;
+
+    @ApiProperty()
+    completed: boolean
+}
