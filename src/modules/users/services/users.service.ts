@@ -9,10 +9,10 @@ import { User } from '../entities/user.entity';
 export class UsersService {
   constructor(@InjectRepository(User) private readonly userRep: Repository<User>) { }
 
-  create({ firstName, lastName, email }: CreateUserDto) {
+  create({ first_name, last_name, email }: CreateUserDto) {
     const newUser = new User()
-    newUser.first_name = firstName;
-    newUser.last_name = lastName;
+    newUser.first_name = first_name;
+    newUser.last_name = last_name;
     newUser.email = email;
 
     return this.userRep.save(newUser)
@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    if(Object.keys(updateUserDto).length === 0){
+    if (Object.keys(updateUserDto).length === 0) {
       throw new BadRequestException('Update values are not defined!')
     }
     return this.userRep.update({ id: id }, updateUserDto);
