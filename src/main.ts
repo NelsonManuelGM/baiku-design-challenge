@@ -13,8 +13,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Baiku CRUD')
-    .setVersion('1.0')
+    .setTitle(process.env.SWAGGER_NAME)
+    .setVersion(process.env.SWAGGER_VERSION)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

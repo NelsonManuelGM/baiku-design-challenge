@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { GeoJsonObject, Position } from "geojson";
 
@@ -7,28 +8,54 @@ interface PointType extends GeoJsonObject {
 }
 
 export class CreatePickupLocationDto {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   country: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   state: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   city: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   street: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   postal_code: string;
 
+  @ApiProperty({type: Array ,example:[254525852,-80125474]})
   @IsArray()
   @IsNotEmpty()
   gps_locations: PointType;
 
+}
+
+export class CreatedPickUpLocation{
+  @ApiProperty()
+  city: string;
+
+  @ApiProperty()
+  country: string;
+
+  @ApiProperty()
+  postal_code: string;
+
+  @ApiProperty()
+  state: string;
+
+  @ApiProperty()
+  street: string;
+
+  @ApiProperty({type: Array ,example:[254525852,-80125474]})
+  gps_location: PointType
 }

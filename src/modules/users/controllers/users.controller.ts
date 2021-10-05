@@ -1,9 +1,9 @@
 import { UuidPipe } from 'src/pipes/uuid.pipes';
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreatedUser, CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
 
 @ApiTags('users')
@@ -11,38 +11,42 @@ import { User } from '../entities/user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  @Post()
+  @ApiBody({ type: CreateUserDto})
   @ApiResponse({
     status: 201,
     description: 'Created',
-    type: User,
+    type: CreatedUser,
   })
+  @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
+
   @ApiResponse({
     status: 200,
     description: 'The found record',
-    type: User,
+    type: CreatedUser,
     isArray: true
   })
+  @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @ApiParam({ name: 'id', type: String, example: 'caeee726-01e9-4496-a5b4-3133f5675876' })
   @ApiResponse({
     status: 200,
     description: 'The found record',
-    type: User,
+    type: CreatedUser,
   })
+  @Get(':id')
   findOne(@Param('id', UuidPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
+  @ApiParam({ name: 'id', type: String, example: 'caeee726-01e9-4496-a5b4-3133f5675876' })
+  @ApiBody({ type: CreateUserDto})
   @Patch(':id')
   update(@Param('id', UuidPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     try{
@@ -52,6 +56,7 @@ export class UsersController {
     }
   }
 
+  @ApiParam({ name: 'id', type: String, example: 'caeee726-01e9-4496-a5b4-3133f5675876' })
   @Delete(':id')
   remove(@Param('id', UuidPipe) id: string) {
     return this.usersService.remove(id);
