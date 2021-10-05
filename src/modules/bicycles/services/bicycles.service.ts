@@ -13,11 +13,11 @@ export class BicyclesService {
     private readonly bicyclesRep: Repository<Bicycle>,
   ) { }
 
-  async create({ type, gpsLocations, locked }: CreateBicycleDto) {
+  async create({ type, gps_locations, locked }: CreateBicycleDto) {
     const newBike = new Bicycle();
     newBike.type = type;
     newBike.locked = locked;
-    newBike.gps_location = createDataPoint(gpsLocations)
+    newBike.gps_location = createDataPoint(gps_locations)
     return await this.bicyclesRep.save(newBike);
   }
 
@@ -33,10 +33,10 @@ export class BicyclesService {
     if (Object.keys(updateBicycleDto).length === 0) {
       throw new BadRequestException('Update values are not defined!')
     }
-    const { gpsLocations, ...rest } = updateBicycleDto;
+    const { gps_locations, ...rest } = updateBicycleDto;
     const data = { ...rest }
-    if (gpsLocations) {
-      const newGpsLocation = createDataPoint(gpsLocations)
+    if (gps_locations) {
+      const newGpsLocation = createDataPoint(gps_locations)
       data['gps_location'] = newGpsLocation
     }
 

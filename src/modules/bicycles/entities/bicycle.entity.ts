@@ -18,8 +18,8 @@ export class Bicycle {
 
   @Column({
     type: 'character varying',
-    enum: ['touring', 'sport'],
-    default: 'sport',
+    enum: ['TOURING', 'SPORT'],
+    default: 'SPORT',
   })
   type: UserRoleType;
 

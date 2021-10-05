@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { GeoJsonObject, Position } from 'geojson';
 import { UserRoleType } from '../entities/bicycle.entity';
 
@@ -13,9 +13,10 @@ export class CreateBicycleDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsIn(['TOURING','SPORT'])
   type: UserRoleType;
 
   @IsArray()
   @IsNotEmpty()
-  gpsLocations: PointType;
+  gps_locations: PointType;
 }
