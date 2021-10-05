@@ -4,17 +4,17 @@ export class CreateReservationDto {
 
     @IsString()
     @IsNotEmpty()
-    idUser: string;
+    id_user: string;
 
     @IsString()
     @IsNotEmpty()
-    idLocation: string;
+    id_location: string;
 
     @IsString()
     @IsOptional()
-    idBicycle: string;
+    id_bicycle: string;
 
     @IsDate()
-    @IsOptional()
-    reserveFor: Date;
+    @IsNotEmpty()
+    reserve_for: Date;
 }

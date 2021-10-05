@@ -14,32 +14,32 @@ export class ReservationValidator {
     ) { }
 
     async validateCreateDTO(createReservationDto: CreateReservationDto) {
-        const { idUser, idLocation, idBicycle, reserveFor } = createReservationDto;
+        const { id_user, id_location, id_bicycle, reserve_for } = createReservationDto;
         const resultObj = {}
 
-        const _user = await this.userService.findOne(idUser);
-        const _location = await this.pickupLocationService.findOne(idLocation)
+        const _user = await this.userService.findOne(id_user);
+        const _location = await this.pickupLocationService.findOne(id_location)
 
         if (!_user) {
-            throw new BadRequestException(`user with id: ${idUser} doesn't exist`);
+            throw new BadRequestException(`user with id: ${id_user} doesn't exist`);
         }
         if (!_location) {
-            throw new BadRequestException(`location with id: ${idLocation} doesn't exist`);
+            throw new BadRequestException(`location with id: ${id_location} doesn't exist`);
         }
 
         resultObj['user'] = _user
         resultObj['location'] = _location
 
         // or both or none of the two
-        if ((idBicycle && !reserveFor) || (!idBicycle && reserveFor)) {
-            throw new BadRequestException('idBicycle and reserveFor come together or none of them come');
+        if ((id_bicycle && !reserve_for)) {
+            throw new BadRequestException('id_bicycle and reserve_for have to come together');
         }
-        if (reserveFor) {
-            resultObj['reserveFor'] = this._validateReserveFor(reserveFor)
+        if (reserve_for) {
+            resultObj['reserve_for'] = this._validateReservationDate(reserve_for)
         }
 
-        if (idBicycle) {
-            resultObj['bicycle'] = await this._validateBicycle(idBicycle);
+        if (id_bicycle) {
+            resultObj['bicycle'] = await this._validateBicycle(id_bicycle);
         }
 
         return resultObj
@@ -49,30 +49,30 @@ export class ReservationValidator {
         if (Object.keys(updateReservationDto).length === 0) {
             throw new BadRequestException('Update values are not defined!')
         }
-        const { idLocation, idBicycle, reserveFor } = updateReservationDto;
+        const { id_location, id_bicycle, reserve_for } = updateReservationDto;
         const resultObj = {}
 
         // or both or none of the two
-        if ((idBicycle && !reserveFor)) {
-            throw new BadRequestException("idBicycle can't come alone in order to complete the reservation");
+        if ((id_bicycle && !reserve_for)) {
+            throw new BadRequestException("id_bicycle have to come ith reserve_for in order to complete the reservation");
         }
-        if (reserveFor) {
-            resultObj['reserveFor'] = this._validateReserveFor(reserveFor)
-        }
-
-        if (idBicycle) {
-            resultObj['bicycle'] = await this._validateBicycle(idBicycle);
+        if (reserve_for) {
+            resultObj['reserve_for'] = this._validateReservationDate(reserve_for)
         }
 
-        if (idLocation) {
-            resultObj['location'] = idLocation
+        if (id_bicycle) {
+            resultObj['bicycle'] = await this._validateBicycle(id_bicycle);
+        }
+
+        if (id_location) {
+            resultObj['location'] = id_location
         }
 
         return resultObj
     }
 
-    _validateReserveFor(reserveFor) {
-        const _reserve_for = +new Date(reserveFor);
+    _validateReservationDate(reserve_for) {
+        const _reserve_for = +new Date(reserve_for);
         const now = +new Date();
 
         //GET the time in hours
@@ -84,16 +84,16 @@ export class ReservationValidator {
             throw new BadRequestException(`reserve within 24 hour`);
         }
 
-        return reserveFor
+        return reserve_for
     }
 
-    async _validateBicycle(idBicycle) {
-        const _bicycle = await this.bicycleService.findOne(idBicycle);
+    async _validateBicycle(id_bicycle) {
+        const _bicycle = await this.bicycleService.findOne(id_bicycle);
         if (!_bicycle) {
-            throw new BadRequestException(`bicycle with id: ${idBicycle} doesn't exist`);
+            throw new BadRequestException(`bicycle with id: ${id_bicycle} doesn't exist`);
         }
         if (!_bicycle.locked) {
-            throw new BadRequestException(`bicycle with id: ${idBicycle} is already reserved`);
+            throw new BadRequestException(`bicycle with id: ${id_bicycle} is already reserved`);
         }
 
         return _bicycle;

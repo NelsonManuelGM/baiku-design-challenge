@@ -13,12 +13,12 @@ export class ReservationService {
   ) { }
 
   async create(data) {
-    const { user, location, bicycle, reserveFor } = data;
+    const { user, location, bicycle, reserve_for } = data;
 
     const newReservation = new Reservation();
     newReservation.user = user;
     newReservation.location = location;
-    newReservation.reserve_for = reserveFor ?? new Date();
+    newReservation.reserve_for = reserve_for ?? new Date();
 
     let response
     const queryRunner = this.connection.createQueryRunner();
@@ -55,14 +55,14 @@ export class ReservationService {
   }
 
   async update(id: string, updateReservationDto) {
-    const { location, bicycle, reserveFor } = updateReservationDto
+    const { location, bicycle, reserve_for } = updateReservationDto
     const newReservation = {}
 
     if (location) {
       newReservation['location'] = location;
     }
-    if (reserveFor) {
-      newReservation['reserve_for'] = reserveFor;
+    if (reserve_for) {
+      newReservation['reserve_for'] = reserve_for;
     }
 
     let response
