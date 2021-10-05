@@ -11,15 +11,15 @@ import { PickupLocation } from '../entities/pickup-location.entity';
 export class PickupLocationService {
   constructor(@InjectRepository(PickupLocation) private readonly pLocationRep: Repository<PickupLocation>) { }
 
-  create({ city, country, gpsLocations, postalCode, state, street }: CreatePickupLocationDto) {
+  create({ city, country, gps_locations, postal_code, state, street }: CreatePickupLocationDto) {
     const newPLocation = new PickupLocation();
     newPLocation.city = city;
     newPLocation.country = country;
-    newPLocation.postal_code = postalCode;
+    newPLocation.postal_code = postal_code;
     newPLocation.state = state;
     newPLocation.street = street;
 
-    newPLocation.gps_location = createDataPoint(gpsLocations)
+    newPLocation.gps_location = createDataPoint(gps_locations)
     return this.pLocationRep.save(newPLocation);
   }
 
@@ -35,9 +35,15 @@ export class PickupLocationService {
     if (Object.keys(updatePickupLocationDto).length === 0) {
       throw new BadRequestException('Update values are not defined!')
     }
-    const { gpsLocations, ...rest } = updatePickupLocationDto;
-    const newGpsLocation = createDataPoint(gpsLocations)
-    return this.pLocationRep.update({ id: id }, { gps_location: newGpsLocation, ...rest });
+    const { gps_locations, ...rest } = updatePickupLocationDto;
+    const obj = { ...rest }
+
+    if (gps_locations) {
+      const newGpsLocation = createDataPoint(gps_locations)
+      obj['gps_locations'] = newGpsLocation
+    }
+
+    return this.pLocationRep.update({ id: id }, obj);
   }
 
   remove(id: string) {
